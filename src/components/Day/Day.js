@@ -48,7 +48,7 @@ export function Day({ day }) {
           <div
             key={idx}
             onClick={() => setSelectedEvent(event)}
-            className={`bg-${event.label}-200 p-1 mr-3 text-gray-600 text-sm rounded mb-1 truncate`}
+            className={`bg-${event.label}-200 p-1 mr-1 ml-1 text-gray-600 text-sm rounded mb-1 truncate`}
           >
             {event.title}
           </div>

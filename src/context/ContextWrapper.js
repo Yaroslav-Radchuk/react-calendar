@@ -17,7 +17,7 @@ const savedEventsReducer = (state, { type, payload }) => {
       return state.map((event) =>
         event.id === payload.id ? payload : event
       );
-  
+
     case 'delete':
       return state.filter((event) => event.id !== payload.id);
 
@@ -29,6 +29,7 @@ const savedEventsReducer = (state, { type, payload }) => {
 const initEvents = () => {
   const storageEvents = localStorage.getItem("savedEvents");
   const parsedEvents = storageEvents ? JSON.parse(storageEvents) : [];
+
   return parsedEvents;
 }
 
@@ -39,7 +40,7 @@ export function ContextWrapper(props) {
   const [showEventModal, setShowEventModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [labels, setLabels] = useState([]);
-  const [savedEvents, dispatchCalEvent] = useReducer(
+  const [savedEvents, dispatchCallEvent] = useReducer(
     savedEventsReducer,
     [],
     initEvents
@@ -110,7 +111,7 @@ export function ContextWrapper(props) {
         labels,
         updateLabel,
         filteredEvents,
-        dispatchCalEvent,
+        dispatchCallEvent,
       }}
     >
       {props.children}

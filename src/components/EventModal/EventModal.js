@@ -23,7 +23,7 @@ export function EventModal() {
     daySelected,
     selectedEvent,
     setShowEventModal,
-    dispatchCalEvent,
+    dispatchCallEvent,
   } = useContext(GlobalContext);
 
   const [title, setTitle] = useState(
@@ -33,7 +33,7 @@ export function EventModal() {
     selectedEvent ? selectedEvent.description : ''
   );
   const [selectedLabel, setSelectedLabel] = useState(selectedEvent
-    ? labels.find((lbl) => lbl === selectedEvent.label)
+    ? labels.find((item) => item === selectedEvent.label)
     : labels[0]
   );
   const [time, setTime] = useState(selectedEvent?.time ?? '--:--');
@@ -42,9 +42,10 @@ export function EventModal() {
     if (!selectedEvent) {
       return;
     }
-  
+
     const date = new Date(event);
-    return dayjs(date).format('DD.MM.YYYY HH:mm')
+
+    return dayjs(date).format('DD.MM.YYYY HH:mm');
   }
 
   const handleSubmit = (event) => {
@@ -59,13 +60,14 @@ export function EventModal() {
     };
 
     if (selectedEvent) {
+      dispatchCallEvent({ type: 'update', payload: eventCalendar });
     } else {
-      dispatchCalEvent({ type: 'update', payload: eventCalendar });
-      dispatchCalEvent({ type: 'push', payload: eventCalendar });
+      dispatchCallEvent({ type: 'push', payload: eventCalendar });
     };
 
     setShowEventModal(false);
   }
+
   return (
     <div className="h-screen w-full fixed left-0 top-0 flex justify-center items-center">
       <form className="bg-white rounded-lg shadow-2xl w-1/4">
@@ -77,14 +79,14 @@ export function EventModal() {
             <CloseIcon color="action" fontSize="small" />
           </IconButton>
         </header>
-        <div className="p-3">
+        <div className="p-3 w-full p-4 pt-2 flex flex-col gap-3">
           {selectedEvent && (
             <p className="text-sm text-gray-400">
-              {!selectedEvent.updated && (
+              {!selectedEvent.payload && (
                 `Created at: ${dateFormCreated(selectedEvent.id)}`
               )}
-              {selectedEvent.updated && (
-                `Updated at: ${dateFormCreated(selectedEvent.updated)}`
+              {selectedEvent.payload && (
+                `Updated at: ${dateFormCreated(selectedEvent.payload)}`
               )}
             </p>
           )}
@@ -168,7 +170,7 @@ export function EventModal() {
               variant="contained"
               color="error"
               onClick={() => {
-                dispatchCalEvent({
+                dispatchCallEvent({
                   type: "delete",
                   payload: selectedEvent,
                 });
